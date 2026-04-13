@@ -1,0 +1,36 @@
+document.getElementById('summarize-btn').addEventListener('click', async () => {
+    const timeLimit = document.getElementById('time-limit').value;
+    const resultDiv = document.getElementById('result');
+    const loader = document.getElementById('loader');
+
+    resultDiv.textContent = '';
+    loader.style.display = 'block';
+
+    try {
+        let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        const url = tab.url;
+
+        // UPDATED: Pointing to your Cloud Server instead of localhost
+        // Replace the URL below with your actual Render URL (keep the /api/summarize at the end)
+        const RENDER_URL = 'PASTE_YOUR_RENDER_URL_HERE/api/summarize';
+
+        const response = await fetch(RENDER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: url, timeLimit: parseInt(timeLimit) })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            resultDiv.textContent = data.summary;
+        } else {
+            resultDiv.textContent = 'Error: ' + data.error;
+        }
+    } catch (error) {
+        resultDiv.textContent = 'Failed to connect to the AI engine. Check if your Render server is live.';
+        console.error(error);
+    } finally {
+        loader.style.display = 'none';
+    }
+});

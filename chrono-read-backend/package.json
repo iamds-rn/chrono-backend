@@ -1,0 +1,17 @@
+{
+  "name": "chrono-read-backend",
+  "version": "1.0.0",
+  "description": "AI summarizer backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test info\" && exit 1"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.1.0",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
